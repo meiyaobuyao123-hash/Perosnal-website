@@ -6,90 +6,89 @@
 <title>AI App Builder</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0a0a;--card:rgba(255,255,255,0.05);--card-border:rgba(255,255,255,0.08);--text:#f5f5f7;--text-secondary:rgba(255,255,255,0.6);--accent:#2997ff;--green:#30d158;--orange:#ff9f0a;--purple:#bf5af2;--pink:#ff375f;--cyan:#64d2ff}
-@font-face{font-family:'SF';src:local('-apple-system'),local('BlinkMacSystemFont'),local('Segoe UI'),local('Helvetica Neue')}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;position:relative}
-body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 20%,rgba(41,151,255,0.08) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(191,90,242,0.06) 0%,transparent 50%);pointer-events:none;z-index:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Helvetica Neue','PingFang SC','Microsoft YaHei',sans-serif;
+  background:#000;color:#f5f5f7;min-height:100vh;overflow-x:hidden
+}
 
-/* Language Toggle */
-.lang-toggle{position:fixed;top:24px;right:32px;z-index:100;display:flex;background:rgba(255,255,255,0.08);border-radius:20px;padding:3px;backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1)}
-.lang-btn{padding:6px 16px;border:none;background:none;color:var(--text-secondary);font-size:13px;cursor:pointer;border-radius:17px;transition:all .3s;font-weight:500}
-.lang-btn.active{background:rgba(255,255,255,0.15);color:var(--text)}
+/* Ambient glow */
+.glow{position:fixed;pointer-events:none;z-index:0}
+.glow-1{top:-20%;left:10%;width:600px;height:600px;background:radial-gradient(circle,rgba(0,113,227,0.12) 0%,transparent 70%)}
+.glow-2{bottom:-10%;right:5%;width:500px;height:500px;background:radial-gradient(circle,rgba(94,92,230,0.1) 0%,transparent 70%)}
 
-/* Container */
-.container{max-width:1080px;margin:0 auto;padding:40px 24px 16px;position:relative;z-index:1}
+/* Language */
+.lang-toggle{position:fixed;top:20px;right:28px;z-index:100;display:flex;background:rgba(255,255,255,0.06);border-radius:8px;padding:2px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.lang-btn{padding:5px 14px;border:none;background:none;color:rgba(255,255,255,0.4);font-size:12px;cursor:pointer;border-radius:6px;transition:all .25s;font-weight:500;letter-spacing:0.02em}
+.lang-btn.active{background:rgba(255,255,255,0.12);color:#fff}
+
+/* Layout */
+.container{max-width:980px;margin:0 auto;padding:48px 40px 20px;position:relative;z-index:1}
 
 /* Hero */
-.hero{text-align:center;margin-bottom:28px}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(41,151,255,0.1);border:1px solid rgba(41,151,255,0.2);border-radius:20px;font-size:11px;color:var(--accent);margin-bottom:12px;letter-spacing:0.5px}
-.hero-badge::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-0.02em;background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,0.7) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;margin-bottom:8px}
-.hero p{font-size:clamp(14px,1.8vw,17px);color:var(--text-secondary);font-weight:400;max-width:500px;margin:0 auto}
+.hero{text-align:center;margin-bottom:40px}
+.hero h1{font-size:48px;font-weight:700;letter-spacing:-0.03em;color:#fff;line-height:1.08;margin-bottom:8px}
+.hero p{font-size:18px;color:rgba(255,255,255,0.5);font-weight:400;letter-spacing:-0.01em}
 
-/* Apps Grid */
-.apps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
-.app-card{background:var(--card);border:1px solid var(--card-border);border-radius:18px;padding:20px 16px;text-align:center;transition:all .4s cubic-bezier(.25,.8,.25,1);position:relative;overflow:hidden}
-.app-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)}
-.app-card:hover{transform:translateY(-4px);background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);box-shadow:0 20px 40px rgba(0,0,0,0.3)}
-.app-icon{width:52px;height:52px;border-radius:14px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:24px;position:relative}
-.app-icon.trading{background:linear-gradient(135deg,#1a1a2e,#16213e);box-shadow:0 4px 16px rgba(41,151,255,0.2)}
-.app-icon.finance{background:linear-gradient(135deg,#1a2e1a,#1e3a1e);box-shadow:0 4px 16px rgba(48,209,88,0.2)}
-.app-icon.predict{background:linear-gradient(135deg,#2e1a2e,#3a1e3a);box-shadow:0 4px 16px rgba(191,90,242,0.2)}
-.app-icon.crypto{background:linear-gradient(135deg,#2e2a1a,#3a351e);box-shadow:0 4px 16px rgba(255,159,10,0.2)}
-.app-name{font-size:15px;font-weight:600;margin-bottom:3px;letter-spacing:-0.01em}
-.app-status{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;margin-bottom:6px;font-weight:500}
-.status-live{background:rgba(48,209,88,0.15);color:var(--green)}
-.status-review{background:rgba(191,90,242,0.15);color:var(--purple)}
-.status-dev{background:rgba(255,159,10,0.15);color:var(--orange)}
-.status-concept{background:rgba(100,210,255,0.15);color:var(--cyan)}
-.app-desc{font-size:12px;color:var(--text-secondary);line-height:1.4;margin-bottom:12px;min-height:34px}
-.app-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 16px;border-radius:16px;font-size:12px;font-weight:500;text-decoration:none;transition:all .3s;border:none;cursor:pointer}
-.btn-appstore{background:var(--accent);color:#fff}
-.btn-appstore:hover{background:#1a8aff;transform:scale(1.05)}
-.btn-coming{background:rgba(255,255,255,0.08);color:var(--text-secondary);cursor:default;border:1px solid rgba(255,255,255,0.1)}
-.btn-appstore svg,.btn-coming svg{width:14px;height:14px}
+/* Apps */
+.apps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.app{background:rgba(255,255,255,0.04);border-radius:16px;padding:24px 20px 20px;text-align:center;transition:transform .35s,background .35s;cursor:default}
+.app:hover{transform:translateY(-2px);background:rgba(255,255,255,0.07)}
+.app-icon{width:64px;height:64px;border-radius:14px;margin:0 auto 14px;overflow:hidden;position:relative}
+.app-icon img{width:100%;height:100%;object-fit:cover;border-radius:14px}
+.app-icon.placeholder{display:flex;align-items:center;justify-content:center}
+.app-name{font-size:15px;font-weight:600;margin-bottom:4px;letter-spacing:-0.01em}
+.tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:4px;margin-bottom:8px;font-weight:500;letter-spacing:0.02em}
+.tag-live{background:rgba(52,199,89,0.15);color:#34c759}
+.tag-review{background:rgba(94,92,230,0.15);color:#5e5ce6}
+.tag-dev{background:rgba(255,159,10,0.15);color:#ff9f0a}
+.app-desc{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;margin-bottom:14px;min-height:36px}
+.dl-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 18px;border-radius:980px;font-size:12px;font-weight:500;text-decoration:none;transition:all .25s;border:none;cursor:pointer;letter-spacing:0.01em}
+.dl-btn-blue{background:#0071e3;color:#fff}
+.dl-btn-blue:hover{background:#0077ed}
+.dl-btn-gray{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);cursor:default}
 
-/* DarwinFi Section */
-.darwin-section{margin-top:4px;background:linear-gradient(135deg,rgba(41,151,255,0.05),rgba(191,90,242,0.05));border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:24px 24px 20px;position:relative;overflow:hidden}
-.darwin-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(191,90,242,0.3),rgba(41,151,255,0.3),transparent)}
-.darwin-section::after{content:'';position:absolute;bottom:-100px;right:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(191,90,242,0.06) 0%,transparent 70%);pointer-events:none}
-.darwin-header{display:flex;align-items:center;gap:12px;margin-bottom:6px}
-.darwin-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#0a1628,#1a0a28);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 20px rgba(100,210,255,0.15);flex-shrink:0}
-.darwin-title{font-size:20px;font-weight:700;letter-spacing:-0.02em}
-.darwin-subtitle{font-size:13px;color:var(--text-secondary);margin-bottom:14px}
-.darwin-modules{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
-.module{padding:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;transition:all .3s}
-.module:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12)}
-.module-icon{font-size:18px;margin-bottom:6px}
-.module-name{font-size:13px;font-weight:600;margin-bottom:3px}
-.module-desc{font-size:11px;color:var(--text-secondary);line-height:1.4}
-.darwin-philosophy{text-align:center;padding:12px 0 0;border-top:1px solid rgba(255,255,255,0.06);font-size:13px;color:var(--text-secondary);font-style:italic}
-.darwin-philosophy strong{color:var(--text);font-style:normal}
+/* DarwinFi */
+.darwin{background:rgba(255,255,255,0.03);border-radius:16px;padding:24px 28px 20px;position:relative}
+.darwin-top{display:flex;align-items:center;gap:14px;margin-bottom:4px}
+.darwin-logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#0a1a30,#1a0a2a);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;overflow:hidden}
+.darwin-logo::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,113,227,0.15),rgba(94,92,230,0.15));border-radius:12px}
+.darwin-logo svg{position:relative;z-index:1}
+.darwin h2{font-size:22px;font-weight:700;letter-spacing:-0.02em}
+.darwin .tag{margin-left:8px;vertical-align:middle}
+.tag-vision{background:rgba(0,199,190,0.15);color:#00c7be}
+.darwin-sub{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:16px;letter-spacing:-0.01em}
+.modules{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.mod{padding:14px;background:rgba(255,255,255,0.03);border-radius:10px;transition:background .3s}
+.mod:hover{background:rgba(255,255,255,0.06)}
+.mod-title{font-size:12px;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.mod-title span{font-size:14px}
+.mod-desc{font-size:11px;color:rgba(255,255,255,0.4);line-height:1.45}
+.philosophy{text-align:center;padding:12px 0 0;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;color:rgba(255,255,255,0.35)}
+.philosophy b{color:rgba(255,255,255,0.7);font-weight:600}
 
 /* Footer */
-.footer{text-align:center;padding:16px 0 8px;color:rgba(255,255,255,0.3);font-size:11px}
+.footer{text-align:center;padding:20px 0 10px;font-size:11px;color:rgba(255,255,255,0.2)}
 
 /* Responsive */
-@media(max-width:640px){
-  .container{padding:50px 16px 24px}
-  .hero{margin-bottom:36px}
-  .apps-grid{grid-template-columns:1fr 1fr;gap:12px}
-  .app-card{padding:20px 16px}
-  .app-icon{width:52px;height:52px;border-radius:13px;font-size:24px}
-  .darwin-section{padding:24px 18px}
-  .darwin-modules{grid-template-columns:1fr 1fr;gap:8px}
-  .module{padding:12px}
-  .lang-toggle{top:16px;right:16px}
+@media(max-width:768px){
+  .container{padding:44px 20px 16px}
+  .hero h1{font-size:32px}
+  .hero p{font-size:15px}
+  .apps{grid-template-columns:1fr 1fr;gap:12px}
+  .modules{grid-template-columns:1fr 1fr;gap:8px}
+  .darwin{padding:20px 18px 16px}
 }
-@media(max-width:380px){
-  .apps-grid{grid-template-columns:1fr}
+@media(max-width:480px){
+  .apps{grid-template-columns:1fr}
+  .modules{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<!-- Language Toggle -->
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
 <div class="lang-toggle">
   <button class="lang-btn active" onclick="setLang('zh')">中文</button>
   <button class="lang-btn" onclick="setLang('en')">EN</button>
@@ -97,108 +96,150 @@ body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%
 
 <div class="container">
 
-  <!-- Hero -->
   <section class="hero">
-    <div class="hero-badge">
-      <span data-zh="AI 驱动" data-en="AI Powered"></span>
-    </div>
     <h1 data-zh="AI App Builder" data-en="AI App Builder">AI App Builder</h1>
     <p data-zh="用 AI 构建下一代智能应用" data-en="Building next-gen intelligent apps with AI"></p>
   </section>
 
-  <!-- App Cards -->
-  <div class="apps-grid">
+  <div class="apps">
 
-    <!-- Future Trading -->
-    <div class="app-card">
-      <div class="app-icon trading">
-        <svg viewBox="0 0 40 40" width="36" height="36"><path d="M8 28 L14 20 L20 24 L26 14 L32 18" stroke="#2997ff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 14 L32 14 L32 18" stroke="#2997ff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="app">
+      <div class="app-icon">
+        <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/a2/3b/44/a23b4405-aedc-5c28-120c-665dbde3f241/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png" alt="Future Trading">
       </div>
       <div class="app-name">Future Trading</div>
-      <div class="app-status status-live" data-zh="已上架 (海外)" data-en="App Store (Intl)"></div>
+      <div class="tag tag-live" data-zh="已上架 (海外)" data-en="App Store (Intl)"></div>
       <div class="app-desc" data-zh="AI 驱动的期货交易模拟与策略分析" data-en="AI-powered futures trading simulation & strategy analysis"></div>
-      <a href="https://apps.apple.com/au/app/future-trading/id6760705840" target="_blank" class="app-btn btn-appstore">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        <span data-zh="下载" data-en="Download"></span>
+      <a href="https://apps.apple.com/au/app/future-trading/id6760705840" target="_blank" class="dl-btn dl-btn-blue">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <span data-zh="App Store" data-en="App Store"></span>
       </a>
     </div>
 
-    <!-- 来理财啊 -->
-    <div class="app-card">
-      <div class="app-icon finance">
-        <svg viewBox="0 0 40 40" width="36" height="36"><circle cx="20" cy="20" r="12" stroke="#30d158" stroke-width="2" fill="none"/><text x="20" y="25" text-anchor="middle" fill="#30d158" font-size="16" font-weight="700">¥</text></svg>
+    <div class="app">
+      <div class="app-icon">
+        <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/68/2e/fe/682efe57-297b-d0bb-4586-13c218b80ea5/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png" alt="来理财啊">
       </div>
       <div class="app-name" data-zh="来理财啊" data-en="Finance Manager"></div>
-      <div class="app-status status-live" data-zh="已上架" data-en="App Store"></div>
+      <div class="tag tag-live" data-zh="已上架" data-en="App Store"></div>
       <div class="app-desc" data-zh="智能记账与个人财务管理助手" data-en="Smart bookkeeping & personal finance assistant"></div>
-      <a href="https://apps.apple.com/au/app/%E6%9D%A5%E7%90%86%E8%B4%A2%E5%95%8A/id6760157774" target="_blank" class="app-btn btn-appstore">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        <span data-zh="下载" data-en="Download"></span>
+      <a href="https://apps.apple.com/au/app/%E6%9D%A5%E7%90%86%E8%B4%A2%E5%95%8A/id6760157774" target="_blank" class="dl-btn dl-btn-blue">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <span data-zh="App Store" data-en="App Store"></span>
       </a>
     </div>
 
-    <!-- AI Predict -->
-    <div class="app-card">
-      <div class="app-icon predict">
-        <svg viewBox="0 0 40 40" width="36" height="36"><circle cx="20" cy="20" r="8" stroke="#bf5af2" stroke-width="2" fill="none"/><circle cx="20" cy="20" r="3" fill="#bf5af2"/><line x1="20" y1="8" x2="20" y2="12" stroke="#bf5af2" stroke-width="2" stroke-linecap="round"/><line x1="20" y1="28" x2="20" y2="32" stroke="#bf5af2" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="20" x2="12" y2="20" stroke="#bf5af2" stroke-width="2" stroke-linecap="round"/><line x1="28" y1="20" x2="32" y2="20" stroke="#bf5af2" stroke-width="2" stroke-linecap="round"/></svg>
+    <div class="app">
+      <div class="app-icon placeholder">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <rect width="64" height="64" rx="14" fill="#0c1829"/>
+          <rect x="1" y="1" width="62" height="62" rx="13" stroke="rgba(0,113,227,0.2)" stroke-width="0.5"/>
+          <!-- Grid lines -->
+          <line x1="14" y1="16" x2="14" y2="48" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+          <line x1="26" y1="16" x2="26" y2="48" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+          <line x1="38" y1="16" x2="38" y2="48" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+          <line x1="50" y1="16" x2="50" y2="48" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+          <line x1="10" y1="22" x2="54" y2="22" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+          <line x1="10" y1="32" x2="54" y2="32" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+          <line x1="10" y1="42" x2="54" y2="42" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+          <!-- Chart line -->
+          <polyline points="12,44 18,40 22,41 28,36 34,33 38,30 42,28" stroke="#5e9fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- AI prediction dashed -->
+          <polyline points="42,28 46,25 50,22" stroke="#34c759" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 2"/>
+          <!-- Dots -->
+          <circle cx="12" cy="44" r="2" fill="#5e9fff"/>
+          <circle cx="22" cy="41" r="2" fill="#5e9fff"/>
+          <circle cx="34" cy="33" r="2" fill="#5e9fff"/>
+          <circle cx="42" cy="28" r="2" fill="#5e9fff"/>
+          <circle cx="50" cy="22" r="2" fill="#34c759"/>
+          <!-- Arrow up -->
+          <polygon points="50,18 47.5,22 52.5,22" fill="#34c759"/>
+          <!-- AI badge -->
+          <rect x="38" y="10" width="18" height="10" rx="3" fill="#0071e3"/>
+          <text x="47" y="18" text-anchor="middle" fill="#fff" font-size="7" font-weight="700" font-family="-apple-system,sans-serif">AI</text>
+          <!-- Data circle -->
+          <circle cx="16" cy="46" r="5" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <path d="M16 41 A5 5 0 1 1 11.5 48" stroke="#34c759" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </svg>
       </div>
       <div class="app-name">AI Predict</div>
-      <div class="app-status status-review" data-zh="审核中" data-en="Under Review"></div>
-      <div class="app-desc" data-zh="基于机器学习的智能趋势预测" data-en="Machine learning-based intelligent trend prediction"></div>
-      <span class="app-btn btn-coming" data-zh="即将上线" data-en="Coming Soon"></span>
+      <div class="tag tag-review" data-zh="审核中" data-en="Under Review"></div>
+      <div class="app-desc" data-zh="基于机器学习的智能趋势预测" data-en="ML-powered intelligent trend prediction"></div>
+      <span class="dl-btn dl-btn-gray" data-zh="即将上线" data-en="Coming Soon"></span>
     </div>
 
-    <!-- Crypto Earn -->
-    <div class="app-card">
-      <div class="app-icon crypto">
-        <svg viewBox="0 0 40 40" width="36" height="36"><path d="M20 8 L20 32 M16 12 L24 12 M15 20 L25 20 M16 28 L24 28" stroke="#ff9f0a" stroke-width="2.5" stroke-linecap="round"/><path d="M24 12 C28 12 28 20 24 20 C28 20 29 28 24 28" stroke="#ff9f0a" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+    <div class="app">
+      <div class="app-icon placeholder">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <rect width="64" height="64" rx="14" fill="#0f1a12"/>
+          <rect x="1" y="1" width="62" height="62" rx="13" stroke="rgba(255,159,10,0.15)" stroke-width="0.5"/>
+          <!-- Bitcoin symbol -->
+          <text x="32" y="38" text-anchor="middle" fill="url(#cg)" font-size="24" font-weight="700" font-family="-apple-system,sans-serif">&#x20BF;</text>
+          <!-- Circular glow -->
+          <circle cx="32" cy="32" r="18" fill="none" stroke="rgba(255,159,10,0.1)" stroke-width="1"/>
+          <circle cx="32" cy="32" r="22" fill="none" stroke="rgba(255,159,10,0.05)" stroke-width="0.5"/>
+          <!-- Sparkle dots -->
+          <circle cx="48" cy="18" r="1.5" fill="#ff9f0a" opacity="0.6"/>
+          <circle cx="16" cy="44" r="1" fill="#ff9f0a" opacity="0.4"/>
+          <circle cx="50" cy="40" r="1" fill="#34c759" opacity="0.5"/>
+          <!-- Up arrow -->
+          <path d="M46 22 L50 16 L54 22" stroke="#34c759" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="50" y1="16" x2="50" y2="28" stroke="#34c759" stroke-width="1.5" stroke-linecap="round"/>
+          <defs><linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff9f0a"/><stop offset="100%" stop-color="#ffd60a"/></linearGradient></defs>
+        </svg>
       </div>
       <div class="app-name">Crypto Earn</div>
-      <div class="app-status status-dev" data-zh="开发中" data-en="In Development"></div>
+      <div class="tag tag-dev" data-zh="开发中" data-en="In Development"></div>
       <div class="app-desc" data-zh="加密货币收益追踪与智能分析" data-en="Crypto earnings tracker & intelligent analysis"></div>
-      <span class="app-btn btn-coming" data-zh="开发中" data-en="In Dev"></span>
+      <span class="dl-btn dl-btn-gray" data-zh="开发中" data-en="In Dev"></span>
     </div>
 
   </div>
 
-  <!-- DarwinFi Vision -->
-  <section class="darwin-section">
-    <div class="darwin-header">
-      <div class="darwin-icon">
-        <svg viewBox="0 0 40 40" width="32" height="32"><path d="M20 6 C12 6 8 12 8 20 C8 28 14 34 20 34 C26 34 32 28 32 20" stroke="url(#dg)" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M32 20 C32 12 26 8 22 10" stroke="url(#dg)" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="20" cy="20" r="4" fill="url(#dg)"/><circle cx="14" cy="14" r="2" fill="#64d2ff" opacity="0.6"/><circle cx="27" cy="15" r="1.5" fill="#bf5af2" opacity="0.6"/><defs><linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#64d2ff"/><stop offset="100%" stop-color="#bf5af2"/></linearGradient></defs></svg>
+  <!-- DarwinFi -->
+  <section class="darwin">
+    <div class="darwin-top">
+      <div class="darwin-logo">
+        <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
+          <path d="M20 6C12 6 8 12 8 20C8 28 14 34 20 34C26 34 32 28 32 20" stroke="url(#dg2)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M32 20C32 12 26 8 22 10" stroke="url(#dg2)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="20" cy="20" r="3.5" fill="url(#dg2)"/>
+          <circle cx="14" cy="14" r="1.5" fill="#5ac8fa" opacity="0.7"/>
+          <circle cx="27" cy="15" r="1.2" fill="#5e5ce6" opacity="0.7"/>
+          <circle cx="25" cy="27" r="1" fill="#34c759" opacity="0.5"/>
+          <defs><linearGradient id="dg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5ac8fa"/><stop offset="100%" stop-color="#5e5ce6"/></linearGradient></defs>
+        </svg>
       </div>
       <div>
-        <div class="darwin-title">DarwinFi</div>
-        <div class="app-status status-concept" data-zh="构思中" data-en="Conceptual"></div>
+        <span style="display:flex;align-items:center;gap:8px">
+          <span class="darwin h2" style="font-size:22px;font-weight:700;letter-spacing:-0.02em">DarwinFi</span>
+          <span class="tag tag-vision" data-zh="构思中" data-en="Conceptual"></span>
+        </span>
       </div>
     </div>
-    <div class="darwin-subtitle" data-zh="一个会自己进化的 AI 交易系统 — 不教它怎么交易，教它怎么思考" data-en="A self-evolving AI trading system — don't teach it how to trade, teach it how to think"></div>
+    <div class="darwin-sub" data-zh="一个会自己进化的 AI 交易系统 — 不教它怎么交易，教它怎么思考" data-en="A self-evolving AI trading system — don't teach it how to trade, teach it how to think"></div>
 
-    <div class="darwin-modules">
-      <div class="module">
-        <div class="module-icon">🌍</div>
-        <div class="module-name" data-zh="世界感知器" data-en="World Perceiver"></div>
-        <div class="module-desc" data-zh="自主搜索全球信息，好奇心驱动，自己决定看什么" data-en="Autonomously searches global info, curiosity-driven, decides what to observe"></div>
+    <div class="modules">
+      <div class="mod">
+        <div class="mod-title"><span>🌍</span> <span data-zh="世界感知器" data-en="World Perceiver"></span></div>
+        <div class="mod-desc" data-zh="自主搜索全球信息，好奇心驱动" data-en="Autonomously searches global info, curiosity-driven"></div>
       </div>
-      <div class="module">
-        <div class="module-icon">🔗</div>
-        <div class="module-name" data-zh="因果推理引擎" data-en="Causal Reasoning Engine"></div>
-        <div class="module-desc" data-zh="Pearl 因果图 + 反事实推理，理解「为什么」而非「是什么」" data-en="Pearl causal graphs + counterfactual reasoning — understanding 'why' not 'what'"></div>
+      <div class="mod">
+        <div class="mod-title"><span>🔗</span> <span data-zh="因果推理引擎" data-en="Causal Engine"></span></div>
+        <div class="mod-desc" data-zh="Pearl 因果图，理解「为什么」" data-en="Pearl causal graphs, understanding 'why'"></div>
       </div>
-      <div class="module">
-        <div class="module-icon">🧠</div>
-        <div class="module-name" data-zh="认知偏差猎手" data-en="Cognitive Bias Hunter"></div>
-        <div class="module-desc" data-zh="捕捉人类系统性错误，计算理性价格 vs 市场价格的偏差" data-en="Captures human systematic errors, computes rational vs. market price deviation"></div>
+      <div class="mod">
+        <div class="mod-title"><span>🧠</span> <span data-zh="认知偏差猎手" data-en="Bias Hunter"></span></div>
+        <div class="mod-desc" data-zh="计算理性价格 vs 市场价格的偏差" data-en="Rational price vs. market price deviation"></div>
       </div>
-      <div class="module">
-        <div class="module-icon">🧬</div>
-        <div class="module-name" data-zh="自我进化器" data-en="Self-Evolver"></div>
-        <div class="module-desc" data-zh="策略基因 + 自然选择，自动回溯修正，发现 unknown unknowns" data-en="Strategy genes + natural selection, auto-backtrace correction, discovers unknown unknowns"></div>
+      <div class="mod">
+        <div class="mod-title"><span>🧬</span> <span data-zh="自我进化器" data-en="Self-Evolver"></span></div>
+        <div class="mod-desc" data-zh="策略基因 + 自然选择，自动回溯修正" data-en="Strategy genes + natural selection"></div>
       </div>
     </div>
 
-    <div class="darwin-philosophy">
-      <span data-zh="核心哲学：让 AI 自己进化，开放给所有人共建 —— <strong>策略基因市场</strong>" data-en="Core philosophy: Let AI evolve on its own, open to everyone —— <strong>Strategy Gene Market</strong>"></span>
+    <div class="philosophy">
+      <span data-zh="核心哲学：让 AI 自己进化，开放给所有人共建 — <b>策略基因市场</b>" data-en="Core philosophy: Let AI evolve on its own, open to all — <b>Strategy Gene Market</b>"></span>
     </div>
   </section>
 
@@ -210,7 +251,6 @@ body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%
 
 <script>
 let currentLang = 'zh';
-
 function setLang(lang) {
   currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -219,7 +259,7 @@ function setLang(lang) {
   document.querySelectorAll('[data-zh]').forEach(el => {
     const text = el.getAttribute('data-' + lang);
     if (text !== null) {
-      if (text.includes('<strong>')) {
+      if (text.includes('<b>') || text.includes('<strong>')) {
         el.innerHTML = text;
       } else {
         el.textContent = text;
@@ -228,8 +268,6 @@ function setLang(lang) {
   });
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
 }
-
-// Initialize
 setLang('zh');
 </script>
 </body>
