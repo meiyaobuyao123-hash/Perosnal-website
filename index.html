@@ -11,21 +11,23 @@ body{
   background:#000;color:#f5f5f7;
   -webkit-font-smoothing:antialiased
 }
+body::before{content:'';position:fixed;top:-40%;left:-20%;width:80%;height:80%;background:radial-gradient(circle,rgba(41,151,255,.06) 0%,transparent 60%);pointer-events:none}
+body::after{content:'';position:fixed;bottom:-30%;right:-10%;width:60%;height:60%;background:radial-gradient(circle,rgba(94,92,230,.04) 0%,transparent 60%);pointer-events:none}
 
 .lang{position:fixed;top:16px;right:20px;z-index:10;display:flex;background:rgba(118,118,128,.24);border-radius:7px;padding:2px}
 .lang button{padding:3px 10px;border:none;background:none;color:rgba(255,255,255,.4);font-size:11px;cursor:pointer;border-radius:5px;transition:.2s;font-weight:500}
 .lang button.active{background:rgba(99,99,102,.55);color:#fff}
 
-.page{max-width:720px;margin:0 auto;padding:44px 24px 16px}
+.page{max-width:720px;margin:0 auto;padding:48px 24px 16px;position:relative;z-index:1}
 
-.hero{text-align:center;margin-bottom:36px}
+.hero{text-align:center;margin-bottom:40px}
 .hero h1{font-size:36px;font-weight:600;letter-spacing:-.03em;line-height:1.1}
-.hero p{font-size:17px;color:#86868b;margin-top:6px}
+.hero p{font-size:17px;color:#86868b;margin-top:8px}
 
-/* — Apps: icon left, text right — */
-.apps{display:flex;flex-direction:column;gap:0}
-.app{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.06)}
-.app:last-child{border-bottom:none}
+/* — Apps — */
+.apps{display:flex;flex-direction:column;gap:10px}
+.app{display:flex;align-items:center;gap:16px;padding:14px 18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:background .3s}
+.app:hover{background:rgba(255,255,255,.06)}
 .app-icon{width:56px;height:56px;border-radius:13px;overflow:hidden;flex-shrink:0}
 .app-icon img,.app-icon svg{width:56px;height:56px;display:block}
 .app-info{flex:1;min-width:0}
@@ -39,13 +41,14 @@ body{
 .app-action span{font-size:11px;color:#48484a}
 
 /* — DarwinFi — */
-.section-gap{height:24px}
-.darwin-title{font-size:24px;font-weight:600;letter-spacing:-.025em;margin-bottom:4px}
-.darwin-sub{font-size:13px;color:#86868b;line-height:1.5;margin-bottom:20px}
-.mods{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;margin-bottom:20px}
-.mod-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.section-gap{height:28px}
+.darwin{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px 22px 18px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.darwin-title{font-size:22px;font-weight:600;letter-spacing:-.025em;margin-bottom:4px}
+.darwin-sub{font-size:13px;color:#86868b;line-height:1.5;margin-bottom:18px}
+.mods{display:grid;grid-template-columns:1fr 1fr;gap:14px 28px;margin-bottom:16px}
+.mod-name{font-size:12px;font-weight:600;margin-bottom:2px}
 .mod-desc{font-size:11px;color:#48484a;line-height:1.4}
-.philosophy{font-size:11px;color:#48484a;text-align:center;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)}
+.philosophy{font-size:11px;color:#48484a;text-align:center;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
 .philosophy b{color:#86868b;font-weight:500}
 
 .footer{text-align:center;padding:16px 0 10px;font-size:10px;color:#333}
@@ -125,7 +128,7 @@ body{
           <span class="app-name">AI Predict</span>
           <span class="app-tag" data-zh="审核中" data-en="Under Review"></span>
         </div>
-        <div class="app-desc" data-zh="基于机器学习的智能趋势预测" data-en="ML-powered intelligent trend prediction"></div>
+        <div class="app-desc" data-zh="AI 预测市场智能交易助手" data-en="AI-powered market prediction & smart trading assistant"></div>
       </div>
       <div class="app-action">
         <span data-zh="即将上线" data-en="Soon"></span>
@@ -157,7 +160,7 @@ body{
 
   <div class="section-gap"></div>
 
-  <div>
+  <div class="darwin">
     <div class="darwin-title">DarwinFi <span style="font-size:13px;color:#48484a;font-weight:400" data-zh="构思中" data-en="Conceptual"></span></div>
     <div class="darwin-sub" data-zh="一个会自己进化的 AI 交易系统。不教它怎么交易，教它怎么思考。" data-en="A self-evolving AI trading system. Don't teach it how to trade — teach it how to think."></div>
     <div class="mods">
